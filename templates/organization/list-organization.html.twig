@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des organisations {% endblock %}
+{% block stylesheets %}
+
+{{ parent() }}
+<style>
+    .organization-details {
+        max-width: 100% !important;
+    }
+
+</style>
+{% endblock stylesheets %}
+{% block body %}
+
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center">
+        <div class="col-10 d-inline-block"> <h3 class="text-info align-content-center mt-4"> Liste des organisations </h3></div>
+        <div class="col-2 d-inline-block mt-4"><a href="{{ path('add_edit_organization') }}" class="btn-info btn ">Nouvelle organisation</a></div>
+    </div>
+
+    <div class="row organization-details">
+        <table class="table table-bordered m-5">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Description</th>
+                <th scope="col">Utilisateurs</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for listOrganization in organizationsParams %}
+                {% set i = 0 %}
+                {% for item in listOrganization %}
+                    <tr>
+                        <td class="w-5">{{ item.name }}</td>
+                        <td class="w-75">{{ item.description }}</td>
+                        <td class="w-10">
+                            <ul>
+{#                                get names of users for each organization #}
+                                {% for users in item %}
+                                    {% for user in users %}
+                                      {% if user.name %}  <li>  {{ user.name }}</li> {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td class="w-10">
+{#                           the position is a variable to specify the position of each element in the table. that's why we make an auto increment counter i  #}
+                            <a href="{{ path('add_edit_organization', {'position': i })}}" class="btn btn-primary btn-edit-organization" id="btn-edit-organization">Modifier</a><br>
+                            <a href="{{ path('delete_organization_profile', {'position': i }) }}" class="btn btn-danger btn-delete-organization"  id="btn-delete-organization" style="margin-top: 5px">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% set i =i +1 %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+{% endblock %}

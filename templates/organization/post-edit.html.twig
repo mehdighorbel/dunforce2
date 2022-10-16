@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} ORGANIZATION {% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h5 class="text-primary"> {% if  organization is defined and organization %} Modifier organisation {% else%} Nouvelle organisation {% endif%} </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="organization_form" class="organization_form">
+                    <h5 class="text-info">Informations générales: </h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xl-12 col-sm-12">
+                            <label class="col-form-label label-weight" for="organization_name"> Nom </label>
+                            <input type="text" id="organization_name"
+                                   class="form-control organization_name"
+                                   name="organization[name]" value="{% if organization is defined and organization.name  %}{{ organization.name  }}{% endif %}">
+                        </div>
+                        <div class="col-xl-12 col-sm-12">
+                            <label class="col-form-label label-weight" for="organization_description">
+                                Description </label>
+                            <textarea  id="organization_description" rows="4" cols="50"
+                                      class="form-control organization_description"
+                                      name="organization[description]">{% if organization is defined and organization.description  %}{{ organization.description  }}{% endif %}</textarea>
+                        </div>
+                    </div>
+                    <h5 class="text-info mt-4 ml-0">Utilisateurs: </h5>
+                    <hr>
+                    <div class="mt-4">
+                        <div class="repeater-list-users ">
+                            <div data-repeater-list="user">
+                                {% if organization is defined and organization['users'] | length > 0 %}
+                                    {% for item in organization %}
+                                        {% set i = 0 %}
+                                        {% for user in item %}
+                                            <div data-repeater-item>
+                                                <div class="row justify-content-between">
+                                                    <div class="col-xl-3 col-sm-12 form-group">
+                                                        <label for="user_name">Nom </label>
+                                                        <input type="text" class="form-control user_name" id="user_name" name="user[name]" value="{{ user.name }}">
+                                                    </div>
+                                                    <div class="col-xl-3 col-sm-12 form-group">
+                                                        <label for="user_pwd">Mot de passe</label>
+                                                        <input type="text" class="form-control user_pwd"
+                                                               id="user_pwd" name="user[password]" value="{{ user.password }}">
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="user[role]" value="ADMIN" {% if "ADMIN" in user.role  %} checked {% endif %}>
+                                                        <label class="form-check-label" for="inlineCheckbox1">ADMIN</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="user[role]" value="CEO" {% if "CEO" in user.role  %} checked {% endif %}>
+                                                        <label class="form-check-label" for="inlineCheckbox2">CEO</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="user[role]" value="CTO" {% if "CTO" in user.role  %} checked {% endif %} >
+                                                        <label class="form-check-label" for="inlineCheckbox3">CTO</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" name="user[role]" value="SALES"{% if "SALES" in user.role  %} checked {% endif %} >
+                                                        <label class="form-check-label" for="inlineCheckbox4">SALES</label>
+                                                    </div>
+                                                    <div class="col-xl-2 col-sm-12 form-group d-flex align-items-center pt-2 mt-4">
+                                                        <button class="btn btn-danger" data-repeater-delete type="button">
+                                                            Supprimer
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            {% set i = i+1 %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% else %}
+                                    <div data-repeater-item>
+                                        <div class="row justify-content-between">
+                                            <div class="col-xl-3 col-sm-12 form-group">
+                                                <label for="user_name">Nom </label>
+                                                <input type="text" class="form-control user_name" id="user_name" name="user[name]">
+                                            </div>
+                                            <div class="col-xl-3 col-sm-12 form-group">
+                                                <label for="user_pwd" >Mot de passe</label>
+                                                <input type="text" class="form-control user_pwd" id="user_pwd" name="user[password]">
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="user[role]" value="ADMIN">
+                                                <label class="form-check-label" for="inlineCheckbox1">ADMIN</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="user[role]" value="CEO">
+                                                <label class="form-check-label" for="inlineCheckbox2">CEO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="user[role]" value="CTO" >
+                                                <label class="form-check-label" for="inlineCheckbox3">CTO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="user[role]" value="SALES" >
+                                                <label class="form-check-label" for="inlineCheckbox3">SALES</label>
+                                            </div>
+                                            <div class="col-xl-2 col-sm-12 form-group d-flex align-items-center pt-2 mt-4">
+                                                <button class="btn btn-danger" data-repeater-delete type="button">
+                                                    Supprimer
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col p-0">
+                                    <button class="btn btn-primary float-right" data-repeater-create type="button">
+                                        Nouveau utilisateur
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="text-center">
+                        <a href="{{ path('home_page') }}" class="btn btn-outline-primary btn-validate">Annuler </a>
+                        <a href="javascript:;" class="btn btn-primary save-infos-organization">Valider</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            $('.repeater-list-users').repeater({
+                show: function () {
+                    $(this).slideDown();
+                },
+                hide: function (deleteElement) {
+                    if (confirm('Voulez-vous vraiment supprimer cet élément ?')) {
+                        $(this).slideUp(deleteElement);
+                    }
+                },
+
+            });
+        })
+
+    </script>
+
+    <script>
+        $(document).on('click', '.save-infos-organization', function () {
+            let formData = new FormData(document.getElementById('organization_form'));
+                 formData.append("organization[position]", "{{ position }}");
+                 formData.append("organization[isNew]", "{% if  organization is defined and organization %}false{% else  %}true{% endif %}");
+        if ($(".organization_description").val() &&  $(".organization_name").val() ){
+            $.ajax({
+                url: "{{ path('save_organization_data_ajax') }}",
+                method: 'POST',
+                enctype: 'multipart/form-data',
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.status === 200) {
+                        location.href = ("{{ path('home_page') }}");
+                    }
+                }
+            });
+        }
+        })
+
+    </script>
+
+{% endblock %}
+
